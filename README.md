@@ -1,28 +1,41 @@
-## Instrucciones para Usar el Script con Docker
+## Instrucciones para Configurar la Base de Datos PostgreSQL en Docker y probar el script
 
-0. **Asegúrate de tener Docker y el cliente postgreSQL instalado en tu máquina.**
-```bash
-sudo apt update
-sudo apt install docker.io
-sudo apt install postgresql-client
-```
+1. **Construir la imagen de Docker**
 
-1. **Construir la imagen Docker**:
 ```bash
 docker build -t my-postgres-image .
 ```
 
-2. **Ejecutar el contenedor Docker**:
+2. **Ejecutar el contenedor**
+
 ```bash
-docker run --name my-postgres-container -v $(pwd):/docker-entrypoint-initdb.d -e POSTGRES_USER=nestor -e POSTGRES_PASSWORD=12ab12ab -e POSTGRES_DB=viveros -p 5432:5432 my-postgres-image
+docker run -d --name my-postgres-container -p 5432:5432 my-postgres-image
 ```
 
-3. **Conectarse a postgresql**:
+3. **Acceder al contenedor**
+
 ```bash
-psql -h localhost -U nestor -d postgres
+docker exec -it my-postgres-container bash
 ```
 
-4. **Ejecutar el script**:
+4. **Restaurar la base de datos**
+
+```bash
+pg_restore -d AlquilerDVD -U postgres -h localhost -p 5432 ./docker-entrypoint-initdb.d/AlquilerPractica.tar
+```
+
+```bash
+pg_restore --clean --if-exists -d AlquilerDVD -U postgres -h localhost -p 5432 ./docker-entrypoint-initdb.d/AlquilerPractica.tar
+```
+
+5. **Conectar a la base de datos**
+
+```bash
+psql -U postgres -d AlquilerDVD
+```
+
+**Ejecutar scripts**:
+
 ```sql
 \i script.sql
 ```
