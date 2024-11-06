@@ -12,7 +12,8 @@ ORDER BY total_sells DESC;
 -- Obtenga las ventas totales por tienda, donde se refleje la ciudad, el país 
 -- (concatenar la ciudad y el país empleando como separador la “,”), y el encargado. Pudiera emplear GROUP BY, ORDER BY
 SELECT CONCAT(ci.city, ', ', co.country) AS city_country, 
-    s.manager_staff_id, 
+    s.manager_staff_id,
+    CONCAT(st.first_name, ', ', st.last_name) AS manager_name,
     SUM(p.amount) AS total_sells
 FROM store s
 JOIN address a ON s.address_id = a.address_id
@@ -21,7 +22,8 @@ JOIN country co ON ci.country_id = co.country_id
 JOIN inventory i ON s.store_id = i.store_id
 JOIN rental r ON i.inventory_id = r.inventory_id
 JOIN payment p ON r.rental_id = p.rental_id
-GROUP BY s.store_id, ci.city, co.country, s.manager_staff_id
+JOIN staff st ON st.staff_id = s.manager_staff_id
+GROUP BY s.store_id, ci.city, co.country, s.manager_staff_id, st.first_name, st.last_name
 ORDER BY total_sells DESC;
 
 -- Obtenga una lista de películas, donde se reflejen el identificador, el título, descripción, categoría, el precio, 
@@ -69,7 +71,8 @@ ORDER BY total_sells DESC;
 -- Vista para las ventas totales por tienda, incluyendo ciudad y país concatenados, y el encargado
 CREATE VIEW view_total_sales_by_store AS
 SELECT CONCAT(ci.city, ', ', co.country) AS city_country, 
-    s.manager_staff_id, 
+    s.manager_staff_id,
+    CONCAT(st.first_name, ', ', st.last_name) AS manager_name,
     SUM(p.amount) AS total_sells
 FROM store s
 JOIN address a ON s.address_id = a.address_id
@@ -78,7 +81,8 @@ JOIN country co ON ci.country_id = co.country_id
 JOIN inventory i ON s.store_id = i.store_id
 JOIN rental r ON i.inventory_id = r.inventory_id
 JOIN payment p ON r.rental_id = p.rental_id
-GROUP BY s.store_id, ci.city, co.country, s.manager_staff_id
+JOIN staff st ON st.staff_id = s.manager_staff_id
+GROUP BY s.store_id, ci.city, co.country, s.manager_staff_id, st.first_name, st.last_name
 ORDER BY total_sells DESC;
 
 -- Vista para la lista de películas con detalles específicos
