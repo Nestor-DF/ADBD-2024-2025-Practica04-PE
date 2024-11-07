@@ -23,7 +23,6 @@ docker exec -it my-postgres-container bash
 ```bash
 pg_restore -d AlquilerDVD -U postgres -h localhost -p 5432 ./docker-entrypoint-initdb.d/AlquilerPractica.tar
 ```
-
 ```bash
 pg_restore --clean --if-exists -d AlquilerDVD -U postgres -h localhost -p 5432 ./docker-entrypoint-initdb.d/AlquilerPractica.tar
 ```
@@ -34,7 +33,7 @@ pg_restore --clean --if-exists -d AlquilerDVD -U postgres -h localhost -p 5432 .
 psql -U postgres -d AlquilerDVD
 ```
 
-**Ejecutar scripts**:
+6. **Ejecutar script**:
 
 ```sql
 \i script.sql
