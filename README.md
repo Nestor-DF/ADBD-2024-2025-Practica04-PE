@@ -36,5 +36,5 @@ psql -U postgres -d AlquilerDVD
 6. **Ejecutar script**:
 
 ```sql
-\i script.sql
+\i /docker-entrypoint-initdb.d/script.sql
 ```
